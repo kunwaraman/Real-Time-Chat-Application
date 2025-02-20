@@ -159,15 +159,30 @@ Handles the UI and WebSocket client logic.
 - **Message Handling:** Demonstrate how messages are mapped, processed, and broadcasted.
 - **Client-Side Communication:** Discuss how SockJS and Stomp.js handle real-time communication.
 
-## Future Enhancements
-- Add user authentication
-- Implement private messaging
-- Store chat history in a database
+/*
+The answer for the revision
+*/
+1. Understanding WebSockets
+WebSockets provide a persistent, full-duplex communication channel between a client and a server, enabling real-time messaging. Unlike traditional HTTP, which follows a request-response model, WebSockets maintain a continuous connection, reducing latency and improving efficiency.
 
-## License
-This project is licensed under the MIT License.
+2. STOMP Protocol
+STOMP (Simple Text Oriented Messaging Protocol) is a lightweight protocol used over WebSockets for messaging. It defines how clients and servers communicate, enabling message routing, subscriptions, and broadcasting. STOMP simplifies handling WebSocket connections in Spring Boot by providing a structured way to send and receive messages.
 
----
-### 🔗 GitHub Repository:
-[Your GitHub Repository Link](https://github.com/your-repo-name)
+3. Spring Boot Integration
+WebSocketConfig.java configures WebSockets and STOMP in the Spring Boot backend.
+@EnableWebSocketMessageBroker enables WebSocket message handling.
+The registerStompEndpoints() method sets up the WebSocket endpoint /chat and enables SockJS as a fallback.
+The configureMessageBroker() method sets up a message broker with /topic for broadcasting and /app for sending messages.
+
+5. Message Handling
+The ChatController.java listens for messages sent to /app/sendMessage using @MessageMapping.
+The @SendTo("/topic/messages") annotation ensures messages are broadcasted to all subscribers.
+Messages follow this path:
+Client sends message → Backend processes it → Message is broadcasted to subscribers
+
+7. Client-Side Communication
+SockJS and Stomp.js handle WebSocket connections in the frontend.
+SockJS provides a fallback mechanism when WebSockets are not supported.
+Stomp.js enables clients to subscribe to /topic/messages and send messages to /app/sendMessage.
+The frontend dynamically updates the chat window when new messages arrive.
 
